@@ -1,5 +1,7 @@
 ![image of Tycho sculpture](http://thomasheidtmann.de/img/160501_TYCHO_Image_01.jpg "Tycho, an interactive object")
 
+[Video of Tycho in action](https://vimeo.com/164922524)
+
 Tycho Setup Guide
 =================
 
