@@ -1,0 +1,151 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>tycho</groupId>
+	<artifactId>Tycho_Projection</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>Tycho_Projection</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>local-maven-repo</id>
+			<name>local-maven-repo</name>
+			<!-- <url>file:///${basedir}/local-maven-repo</url> -->
+			<url>file:local-maven-repo</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<!-- For creating a single executable JAR. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>tycho.Tycho_Projection</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+
+				<executions>
+					<execution>
+						<id>Tycho_Projection</id>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>tycho.Tycho_Projection</mainClass>
+					<arguments>
+					</arguments>
+					<stopUnresponsiveDaemonThreads>true</stopUnresponsiveDaemonThreads>
+					<systemProperties>
+					</systemProperties>
+				</configuration>
+			</plugin>
+			<!-- To install a new dep into the local repo, uncomment this, modify 
+				paths as needed, and run mvn clean once, then re-comment this out -->
+<!-- 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.2</version>
+				<executions>
+					<execution>
+						<id>install-dep</id>
+						<phase>clean</phase>
+						<configuration>
+							<file>${project.basedir}/lib/user/Syphon/jsyphon.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<groupId>jsyphon</groupId>
+							<artifactId>jsyphon</artifactId>
+							<version>0.0.1</version>
+							<packaging>jar</packaging>
+							<pomFile>${project.basedir}/lib/user/Syphon/pom.xml</pomFile>
+							<localRepositoryPath>${project.basedir}/local-maven-repo</localRepositoryPath>
+							<createChecksum>true</createChecksum>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin> -->
+		</plugins>
+	</build>
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.processing/core -->
+		<dependency>
+			<groupId>org.processing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.3.7</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.processing/video -->
+		<dependency>
+			<groupId>org.processing</groupId>
+			<artifactId>video</artifactId>
+			<version>3.3.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt-main</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all-main</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>p5</groupId>
+			<artifactId>oscP5</artifactId>
+			<version>0.9.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>codeanticode</groupId>
+			<artifactId>Syphon</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jsyphon</groupId>
+			<artifactId>jsyphon</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+	</dependencies>
+</project>
