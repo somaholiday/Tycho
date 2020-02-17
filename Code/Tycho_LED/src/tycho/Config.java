@@ -11,7 +11,7 @@ public interface Config {
 	public static final int LED_STRIP_COUNT = 3;
 
 	// location of particle image mask
-	public static final String PARTICLE_FILENAME = "/Users/soma/Dropbox/Tycho/Projections/comet.png";
+	public static final String PARTICLE_FILENAME = "comet.png";
 
 	// length of particle gradient (in px)
 	public static final int PARTICLE_LENGTH = 180;

@@ -29,8 +29,12 @@ public class Tycho_Projection extends PApplet {
 	int SIZE_W = 500;
 	int SIZE_H = 500;
 
+//	public void settings() {
+//		size(500, 500, P2D);
+//	}
+
 	public void setup() {
-		size(SIZE_W, SIZE_H, P2D);
+		 size(500, 500, P2D);
 		colorMode(HSB, 360, 100, 100);
 		blendMode(ADD);
 
@@ -86,7 +90,7 @@ public class Tycho_Projection extends PApplet {
 
 		syphon.sendScreen();
 
-		showFrameRate();
+		// showFrameRate();
 	}
 
 	public void showFrameRate() {

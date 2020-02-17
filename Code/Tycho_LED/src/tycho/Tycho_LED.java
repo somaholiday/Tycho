@@ -28,15 +28,19 @@ public class Tycho_LED extends PApplet {
 	int SIZE_W = 100;
 	int SIZE_H = 6;
 
+//	public void settings() {
+//		size(100, 6, P2D);
+//	}
+
 	public void setup() {
-		size(SIZE_W, SIZE_H, P2D);
+		size(100, 6, P2D);
 		colorMode(HSB, 360, 100, 100);
 		blendMode(ADD);
 
 		PApplet pap = this;
 
 		// Color Sensor
-//		 colorSensor = new CameraColorSensor(pap);
+		// colorSensor = new CameraColorSensor(pap);
 		colorSensor = new DummyColorSensor(pap);
 
 		// LEDs
@@ -89,7 +93,7 @@ public class Tycho_LED extends PApplet {
 			}
 		}
 
-		showFrameRate();
+//		 showFrameRate();
 	}
 
 	public void showColorDebug(int col) {
