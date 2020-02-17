@@ -1,8 +1,14 @@
 package tycho;
 
-import netP5.NetAddress;
-import oscP5.OscMessage;
-import oscP5.OscP5;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.illposed.osc.OSCMessage;
+import com.illposed.osc.OSCSerializeException;
+import com.illposed.osc.transport.udp.OSCPortOut;
+
 import processing.core.PApplet;
 import tycho.led.LEDPhotons;
 import tycho.led.LEDs;
@@ -12,8 +18,8 @@ import tycho.sensor.DummyColorSensor;
 @SuppressWarnings("serial")
 public class Tycho_LED extends PApplet {
 
-	private OscP5 osc;
-	private NetAddress syphonSketch;
+	private OSCPortOut oscPort;
+	static final int OSC_PORT_OUT = 7777;
 
 	// Color Sensor
 	ColorSensor colorSensor;
@@ -47,8 +53,12 @@ public class Tycho_LED extends PApplet {
 		leds = new LEDs(pap);
 		photons = new LEDPhotons(pap);
 
-		osc = new OscP5(this, 6666);
-		syphonSketch = new NetAddress("127.0.0.1", 7777);
+		try {
+			oscPort = new OSCPortOut(InetAddress.getLocalHost(), OSC_PORT_OUT);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		background(0);
 	}
@@ -84,10 +94,16 @@ public class Tycho_LED extends PApplet {
 
 			if (System.currentTimeMillis() - lastMsg > TIME_BETWEEN_MSG) {
 				// send OSC report
-				OscMessage msg = new OscMessage("/contact");
-				msg.add(reportColor);
 
-				osc.send(msg, syphonSketch);
+				final List<Object> args = new ArrayList<>(1);
+				args.add(reportColor);
+				final OSCMessage msg = new OSCMessage("/contact", args);
+				try {
+					oscPort.send(msg);
+				} catch (IOException | OSCSerializeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				lastMsg = System.currentTimeMillis();
 			}
