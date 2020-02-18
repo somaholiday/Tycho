@@ -1,8 +1,6 @@
 package tycho.effects;
 
 import processing.core.PApplet;
-import processing.core.PConstants;
-import processing.core.PGraphics;
 import processing.core.PImage;
 
 public class Ring {
@@ -43,7 +41,6 @@ public class Ring {
 
 		// If the particle is still alive, draw it
 		if (intensity >= 1) {
-//			pg.blendMode(PConstants.ADD);
 			pap.tint(hue, saturation, intensity);
 			pap.image(texture, x - size / 2, y - size / 2, size, size);
 		}
