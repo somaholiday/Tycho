@@ -120,11 +120,5 @@
 			<artifactId>javaosc-core</artifactId>
 			<version>0.6</version>
 		</dependency>
-
-		<dependency>
-			<groupId>p5</groupId>
-			<artifactId>oscP5</artifactId>
-			<version>0.9.8</version>
-		</dependency>
 	</dependencies>
 </project>

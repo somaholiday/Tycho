@@ -57,50 +57,26 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.6.0</version>
 
-				<executions>
-					<execution>
-						<id>Tycho_Projection</id>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
 				<configuration>
-					<mainClass>tycho.Tycho_Projection</mainClass>
+					<executable>java</executable>
 					<arguments>
+						<argument>-Djava.library.path=${project.basedir}/lib/user/Syphon</argument>
+						<argument>-classpath</argument>
+						<classpath />
+						<argument>tycho.Tycho_Projection</argument>
 					</arguments>
-					<stopUnresponsiveDaemonThreads>true</stopUnresponsiveDaemonThreads>
-					<systemProperties>
-					</systemProperties>
 				</configuration>
 			</plugin>
 			<!-- To install a new dep into the local repo, uncomment this, modify 
 				paths as needed, and run mvn clean once, then re-comment this out -->
-<!-- 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<version>2.5.2</version>
-				<executions>
-					<execution>
-						<id>install-dep</id>
-						<phase>clean</phase>
-						<configuration>
-							<file>${project.basedir}/lib/user/Syphon/jsyphon.jar</file>
-							<repositoryLayout>default</repositoryLayout>
-							<groupId>jsyphon</groupId>
-							<artifactId>jsyphon</artifactId>
-							<version>0.0.1</version>
-							<packaging>jar</packaging>
-							<pomFile>${project.basedir}/lib/user/Syphon/pom.xml</pomFile>
-							<localRepositoryPath>${project.basedir}/local-maven-repo</localRepositoryPath>
-							<createChecksum>true</createChecksum>
-						</configuration>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-install-plugin</artifactId> 
+				<version>2.5.2</version> <executions> <execution> <id>install-dep</id> <phase>clean</phase> 
+				<configuration> <file>${project.basedir}/lib/user/Syphon/jsyphon.jar</file> 
+				<repositoryLayout>default</repositoryLayout> <groupId>jsyphon</groupId> <artifactId>jsyphon</artifactId> 
+				<version>0.0.1</version> <packaging>jar</packaging> <pomFile>${project.basedir}/lib/user/Syphon/pom.xml</pomFile> 
+				<localRepositoryPath>${project.basedir}/local-maven-repo</localRepositoryPath> 
+				<createChecksum>true</createChecksum> </configuration> <goals> <goal>install-file</goal> 
+				</goals> </execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 
@@ -128,6 +104,12 @@
 			<groupId>org.jogamp.jogl</groupId>
 			<artifactId>jogl-all-main</artifactId>
 			<version>2.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.illposed.osc</groupId>
+			<artifactId>javaosc-core</artifactId>
+			<version>0.6</version>
 		</dependency>
 
 		<dependency>
