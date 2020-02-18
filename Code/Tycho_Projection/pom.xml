@@ -52,6 +52,25 @@
 				</executions>
 			</plugin>
 
+			<!-- creates an OSX app bundle -->
+			<plugin>
+				<groupId>sh.tak.appbundler</groupId>
+				<artifactId>appbundle-maven-plugin</artifactId>
+				<version>1.2.0</version>
+				<configuration>
+					<mainClass>tycho.Tycho_Projection</mainClass>
+					<generateDiskImageFile>true</generateDiskImageFile>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -73,8 +92,14 @@
 				<version>2.5.2</version> <executions> <execution> <id>install-dep</id> <phase>clean</phase> 
 				<configuration> <file>${project.basedir}/lib/user/Syphon/jsyphon.jar</file> 
 				<repositoryLayout>default</repositoryLayout> <groupId>jsyphon</groupId> <artifactId>jsyphon</artifactId> 
-				<version>0.0.1</version> <packaging>jar</packaging> <pomFile>${project.basedir}/lib/user/Syphon/pom.xml</pomFile> 
+				<version>0.0.1</version> <packaging>jar</packaging> <pomFile>${project.basedir}/lib/user/Syphon/jsyphon-0.0.1.pom</pomFile> 
 				<localRepositoryPath>${project.basedir}/local-maven-repo</localRepositoryPath> 
+				<createChecksum>true</createChecksum> </configuration> <goals> <goal>install-file</goal> 
+				</goals> </execution> <execution> <id>install-dep2</id> <phase>clean</phase> 
+				<configuration> <file>${project.basedir}/lib/user/Syphon/Syphon.jar</file> 
+				<repositoryLayout>default</repositoryLayout> <groupId>codeanticode</groupId> 
+				<artifactId>Syphon</artifactId> <version>3.0.0</version> <packaging>jar</packaging> 
+				<pomFile>${project.basedir}/lib/user/Syphon/Syphon-3.0.0.pom</pomFile> <localRepositoryPath>${project.basedir}/local-maven-repo</localRepositoryPath> 
 				<createChecksum>true</createChecksum> </configuration> <goals> <goal>install-file</goal> 
 				</goals> </execution> </executions> </plugin> -->
 		</plugins>
