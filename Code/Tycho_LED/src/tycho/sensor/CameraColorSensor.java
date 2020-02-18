@@ -18,6 +18,8 @@ public class CameraColorSensor extends ColorSensor {
 
 	public CameraColorSensor(PApplet pap) {
 		super(pap);
+		System.out.println("CAMERA");
+		PApplet.printArray(Capture.list());
 //		System.out.println(Capture.list());
 		camera = new Capture(pap, RES_W, RES_H, CAMERA_NAME, FRAMERATE);
 		camera.start();
