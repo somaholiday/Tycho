@@ -28,20 +28,22 @@ public class Tycho_LED extends PApplet {
 	LEDs leds;
 	LEDPhotons photons;
 
-	static final int FRAMES_PER_EMIT = 240;
+	static final int FRAMES_PER_EMIT = 120;
 	static final int TIME_BETWEEN_MSG = 100;
 
 	int SIZE_W = 100;
 	int SIZE_H = 6;
 
-//	public void settings() {
-//		size(100, 6, P2D);
-//	}
+	public void settings() {
+		size(SIZE_W, SIZE_H, P2D);
+	}
 
 	public void setup() {
-		size(100, 6, P2D);
 		colorMode(HSB, 360, 100, 100);
 		blendMode(ADD);
+
+		System.out.println("🔥🔥🔥🔥🔥🔥🔥");
+		System.out.println("Data path is: " + this.dataPath("") + '/');
 
 		PApplet pap = this;
 
