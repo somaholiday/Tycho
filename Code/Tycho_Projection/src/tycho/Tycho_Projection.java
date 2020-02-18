@@ -1,20 +1,25 @@
 package tycho;
 
+import java.io.IOException;
+import com.illposed.osc.MessageSelector;
+import com.illposed.osc.OSCMessage;
+import com.illposed.osc.OSCMessageEvent;
+import com.illposed.osc.OSCMessageListener;
+import com.illposed.osc.messageselector.OSCPatternAddressMessageSelector;
+import com.illposed.osc.transport.udp.OSCPortIn;
 import codeanticode.syphon.SyphonServer;
-import oscP5.OscBundle;
-import oscP5.OscMessage;
-import oscP5.OscP5;
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.opengl.PJOGL;
 import tycho.effects.Ring;
 import tycho.effects.scene.EffectScene;
 import tycho.madmapper.MadMapperScript;
 import tycho.particle.GalaxyParticles;
 
-@SuppressWarnings("serial")
 public class Tycho_Projection extends PApplet {
 
-	private OscP5 osc;
+	private OSCPortIn oscPortIn;
+	static final int OSC_PORT_IN = 7777;
 
 	// Projection Image
 	SyphonServer syphon;
@@ -29,27 +34,19 @@ public class Tycho_Projection extends PApplet {
 	int SIZE_W = 500;
 	int SIZE_H = 500;
 
-//	public void settings() {
-//		size(500, 500, P2D);
-//	}
+	public void settings() {
+		size(SIZE_W, SIZE_H, P2D);
+		PJOGL.profile = 1; // magic for Syphon (https://github.com/Syphon/Processing/issues/23#issuecomment-179707694)
+	}
 
 	public void setup() {
-		 size(500, 500, P2D);
 		colorMode(HSB, 360, 100, 100);
 		blendMode(ADD);
+		
+		System.out.println("🔥🔥🔥🔥🔥🔥🔥");
+		System.out.println("Data path is: " + this.dataPath("") + '/');
 
 		PApplet pap = this;
-
-		osc = new OscP5(this, 7777);
-
-		// Projection Image
-		syphon = new SyphonServer(pap, "Tycho");
-		// galaxyParticles = new GalaxyParticles(pap);
-		script = new MadMapperScript();
-		// effectScenes = new EffectScene[] { new RippleScene(pap) };
-
-		prepareExitHandler();
-
 		PImage texture = pap.loadImage("ring.png");
 
 		rings = new Ring[100];
@@ -57,6 +54,16 @@ public class Tycho_Projection extends PApplet {
 		for (int i = 0; i < rings.length; i++) {
 			rings[i] = new Ring(pap, texture);
 		}
+
+		// Projection Image
+		syphon = new SyphonServer(pap, "Tycho");
+		// galaxyParticles = new GalaxyParticles(pap);
+		script = new MadMapperScript();
+		// effectScenes = new EffectScene[] { new RippleScene(pap) };
+
+		setupOSCListener();
+
+		prepareExitHandler();
 
 		background(0);
 	}
@@ -78,14 +85,9 @@ public class Tycho_Projection extends PApplet {
 		// syphon.sendImage(galaxyParticles.pg);
 
 		pushStyle();
-		noStroke();
-		// fill(255, 100, 100);
-		// rect(0, 0, frameCount % width, frameCount % width);
-
 		for (int i = 0; i < rings.length; i++) {
 			rings[i].draw();
 		}
-
 		popStyle();
 
 		syphon.sendScreen();
@@ -99,10 +101,6 @@ public class Tycho_Projection extends PApplet {
 		}
 	}
 
-	public void keyPressed() {
-
-	}
-
 	public void addRing(int color) {
 		Ring ring = rings[ringIndex];
 		ring.setHue(hue(color));
@@ -111,26 +109,29 @@ public class Tycho_Projection extends PApplet {
 		ringIndex = (ringIndex + 1) % rings.length;
 	}
 
-	void oscEvent(OscBundle bundle) {
-		println("bundle received!");
-
-		for (int i = 0; i < bundle.size(); i++) {
-			OscMessage m = bundle.getMessage(i);
-			print(m.addrPattern());
+	private void setupOSCListener() {
+		try {
+			oscPortIn = new OSCPortIn(OSC_PORT_IN);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	}
 
-	void oscEvent(OscMessage msg) {
-		// println("message received");
-		// println(msg.addrPattern());
-		if (msg.checkAddrPattern("/contact")) {
-			// println("contact!");
-			// println(msg.typetag());
-			int color = msg.get(0).intValue();
-			if (color != 0) {
-				addRing(color);
+		MessageSelector selector = new OSCPatternAddressMessageSelector("/contact");
+
+		OSCMessageListener listener = new OSCMessageListener() {
+			public void acceptMessage(OSCMessageEvent event) {
+				// System.out.println("Contact received!");
+				OSCMessage message = event.getMessage();
+
+				int color = (int) message.getArguments().get(0);
+				if (color != 0) {
+					addRing(color);
+				}
 			}
-		}
+		};
+
+		oscPortIn.getDispatcher().addListener(selector, listener);
+		oscPortIn.startListening();
 	}
 
 	private void prepareExitHandler() {
@@ -139,6 +140,13 @@ public class Tycho_Projection extends PApplet {
 				System.out.println("== SHUTDOWN HOOK ==");
 
 				syphon.stop();
+				oscPortIn.stopListening();
+				try {
+					oscPortIn.disconnect();
+					oscPortIn.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}));
 	}
